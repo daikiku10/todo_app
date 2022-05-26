@@ -14,6 +14,7 @@ type User struct {
 	CreatedAt time.Time
 }
 
+/** ユーザーの作成 */
 func (u *User) CreateUser() (err error) {
 	cmd := `insert into users (
 		uuid,
@@ -30,7 +31,7 @@ func (u *User) CreateUser() (err error) {
 	return err
 }
 
-// ユーザーの取得
+/** ユーザーの取得 */
 func GetUser(id int) (user User, err error) {
 	user = User{}
 	cmd := `select id, uuid, name, email, password, created_at
@@ -44,4 +45,18 @@ func GetUser(id int) (user User, err error) {
 		&user.CreatedAt,
 	)
 	return user, err
+}
+
+/** ユーザーの更新 */
+func (u *User) UpdateUser() (err error) {
+	cmd := `update users set name = ?, email = ? where id = ?`
+
+	_, err = Db.Exec(cmd, u.Name, u.Email, u.ID)
+
+	// エラーハンドリング
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return err
 }
