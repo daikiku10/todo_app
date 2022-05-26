@@ -20,6 +20,7 @@ var err error
 // テーブル名の宣言
 const (
 	tableNameUser = "users"
+	tableNameTodo = "todos"
 )
 
 func init() {
@@ -28,6 +29,8 @@ func init() {
 		log.Fatalln(err)
 	}
 
+	// テーブル作成コマンド
+	// ユーザーテーブル
 	cmdU := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uuid STRING NOT NULL UNIQUE,
@@ -37,6 +40,15 @@ func init() {
 		created_at DATETIME)`, tableNameUser)
 
 	Db.Exec(cmdU)
+
+	// タスクテーブル
+	cmdT := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		content TEXT,
+		user_id INTEGER,
+		created_at DATETIME)`, tableNameTodo)
+
+	Db.Exec(cmdT)
 }
 
 func createUUID() (uuidobj uuid.UUID) {
