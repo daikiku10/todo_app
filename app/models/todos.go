@@ -111,3 +111,21 @@ func (u *User) GetTodosByUser() (todos []Todo, err error) {
 
 	return todos, err
 }
+
+/** タスクの更新 */
+func (t *Todo) UpdateTodo() (err error) {
+	cmd := `update todos set content = ?, user_id = ?
+	where id = ?`
+
+	_, err = Db.Exec(cmd, t.Content, t.UserID, t.ID)
+
+	// エラーハンドリング
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return err
+}
+
+
+/** タスクの削除 */
