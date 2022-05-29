@@ -129,3 +129,15 @@ func (t *Todo) UpdateTodo() (err error) {
 
 
 /** タスクの削除 */
+func (t *Todo) DeleteTodo() (err error) {
+	cmd := `delete from todos where id = ?`
+
+	_, err = Db.Exec(cmd, t.ID)
+
+	// エラーハンドリング
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return err
+}
