@@ -45,3 +45,36 @@ func GetTodo(id int) (todo Todo, err error) {
 
 	return todo, err
 }
+
+/** タスクの全取得 */
+func GetTodos() (todos []Todo, err error) {
+	cmd := `select id, content, user_id, created_at from todos`
+
+	rows, err := Db.Query(cmd)
+
+	// エラーハンドリング
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for rows.Next() {
+		var todo Todo
+		err = rows.Scan(
+			&todo.ID,
+			&todo.Content,
+			&todo.UserID,
+			&todo.CreatedAt,
+		)
+
+		// エラーハンドリング
+		if err != nil {
+			log.Fatalln(err)
+		}
+		todos = append(todos, todo)
+	}
+
+	rows.Close()
+
+	return todos, err
+	
+}
